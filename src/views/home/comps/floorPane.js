@@ -29,7 +29,13 @@ FloorPane.prototype.init = (eleId, data, resource) => {
     //     .style("transform", "rotateX(70deg) rotateZ(-45deg) translateZ(-15vmin)");
 
     let storeEle = svgEle.append("g");
-    storeFloor(storeEle);
+    storeFloor(
+        storeEle,
+        containerHeight,
+        containerWidth,
+        "rotateX(70deg) rotateZ(-45deg) translateZ(-15vmin)"
+    );
+    // storeFloor(storeEle, containerHeight, containerWidth, "");
     // storeEle.style(
     //     "transform",
     //     "rotateX(70deg) rotateZ(-45deg) translateZ(-15vmin)"
