@@ -1,10 +1,10 @@
 import Vue from "vue";
-import VueResource from 'vue-resource'
+import VueResource from "vue-resource";
 import App from "./App.vue";
 import router from "./router";
 import config from "./config/";
 
-Vue.use(VueResource)
+Vue.use(VueResource);
 Vue.config.productionTip = false;
 Vue.prototype.$config = config;
 window._ = require("lodash");
@@ -16,7 +16,6 @@ new Vue({
         //process msg
         // const msg = new MSG();
         // msg.init();
-
         // if (config.enableAuth) {
         //     //fetch account
         //     const token = Vue.ls.get("TOKEN");
@@ -25,4 +24,4 @@ new Vue({
         //     }
         // }
     }
-}).$mount("#app")
+}).$mount("#app");

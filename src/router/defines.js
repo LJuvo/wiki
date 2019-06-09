@@ -3,29 +3,39 @@ export const appRouter = {
     name: "root",
     component: () =>
         import ("../views"),
-    redirect: "/home",
+    redirect: "/ibms",
     children: [{
-        path: "home",
-        name: "home",
-        component: () =>
-            import ("../views/home/")
-    }, {
-        path: "api",
-        name: "api",
-        component: () =>
-            import ("../views/api/")
-    }, {
-        path: "api/:controller/:model",
-        name: "apis",
-        component: () =>
-            import ("../views/api/")
-    }, {
-        path: "color",
-        name: "color",
-        component: () =>
-            import ("../views/color/")
-    }]
-}
+            path: "home",
+            name: "home",
+            component: () =>
+                import ("../views/home/")
+        },
+        {
+            path: "api",
+            name: "api",
+            component: () =>
+                import ("../views/api/")
+        },
+        {
+            path: "api/:controller/:model",
+            name: "apis",
+            component: () =>
+                import ("../views/api/")
+        },
+        {
+            path: "color",
+            name: "color",
+            component: () =>
+                import ("../views/color/")
+        },
+        {
+            path: "ibms",
+            name: "IBMS",
+            component: () =>
+                import ("../views/ibms/")
+        }
+    ]
+};
 
 //不需要权限验证的通用路由
 export const commonRouters = [{

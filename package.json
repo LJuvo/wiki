@@ -10,7 +10,13 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "d3": "^5.9.2",
+    "dat.gui": "^0.7.6",
     "lodash": "^4.17.11",
+    "three": "^0.105.2",
+    "three-obj-mtl-loader": "^1.0.3",
+    "three-orbitcontrols": "^2.102.1",
+    "three-stl-loader": "^1.0.6",
+    "tween": "^0.9.0",
     "vue": "^2.6.10",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.3",
