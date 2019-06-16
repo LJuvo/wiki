@@ -4,7 +4,6 @@ import { MTLLoader, OBJLoader } from "three-obj-mtl-loader";
 // import STLLoader from "three-stl-loader";
 import "../utils/STLLoader";
 import OrbitControls from "three-orbitcontrols";
-import "../utils/OnEvent";
 let ThBox = () => {};
 var curve;
 
@@ -43,34 +42,6 @@ ThBox.prototype.init = (boxId, boxWidth, boxHeight) => {
         for (var y = -5; y < 5; y++) {
             var sprite = new THREE.Sprite(spriteMaterial);
             sprite.position.set(x * 10, y * 10, 0);
-            sprite.on("click", function(m) {
-                m.scale.set(2, 2, 2); // m指向mesh
-            });
-            // hover鼠标悬停监听
-            sprite.on(
-                "hover",
-                function(m) {
-                    // mouse enter the mesh
-                    m.scale.set(2, 2, 2);
-                },
-                function(m) {
-                    // mouse leave out the mesh
-                    m.scale.set(1, 1, 1);
-                }
-            );
-
-            // webvr gaze凝视监听
-            sprite.on(
-                "gaze",
-                function(m) {
-                    // mesh is gazed in
-                    m.material.color = 0x00ddaa;
-                },
-                function(m) {
-                    // mesh is gazed out
-                    m.material.color = 0x00aadd;
-                }
-            );
             scene.add(sprite);
         }
     }

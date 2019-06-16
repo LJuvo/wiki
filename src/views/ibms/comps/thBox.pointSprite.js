@@ -4,7 +4,6 @@ import { MTLLoader, OBJLoader } from "three-obj-mtl-loader";
 // import STLLoader from "three-stl-loader";
 import "../utils/STLLoader";
 import OrbitControls from "three-orbitcontrols";
-import "../utils/OnEvent";
 let ThBox = () => {};
 var curve;
 
@@ -37,43 +36,23 @@ ThBox.prototype.init = (boxId, boxWidth, boxHeight) => {
     var orbitControls = new THREE.OrbitControls(camera);
     orbitControls.autoRotate = true;
 
-    var spriteMaterial = new THREE.SpriteMaterial();
-    // 循环创建多个 THREE.Sprite 对象，该对象始终面向摄像机
+    var geometry = new THREE.Geometry();
+    var material = new THREE.PointsMaterial({
+        size: 4,
+        vertexColors: true, // 是否为几何体的每个顶点应用颜色，默认值是为所有面应用材质的颜色
+        color: 0xffffff
+    });
+
     for (var x = -5; x < 5; x++) {
         for (var y = -5; y < 5; y++) {
-            var sprite = new THREE.Sprite(spriteMaterial);
-            sprite.position.set(x * 10, y * 10, 0);
-            sprite.on("click", function(m) {
-                m.scale.set(2, 2, 2); // m指向mesh
-            });
-            // hover鼠标悬停监听
-            sprite.on(
-                "hover",
-                function(m) {
-                    // mouse enter the mesh
-                    m.scale.set(2, 2, 2);
-                },
-                function(m) {
-                    // mouse leave out the mesh
-                    m.scale.set(1, 1, 1);
-                }
-            );
-
-            // webvr gaze凝视监听
-            sprite.on(
-                "gaze",
-                function(m) {
-                    // mesh is gazed in
-                    m.material.color = 0x00ddaa;
-                },
-                function(m) {
-                    // mesh is gazed out
-                    m.material.color = 0x00aadd;
-                }
-            );
-            scene.add(sprite);
+            var particle = new THREE.Vector3(x * 10, y * 10, 0);
+            geometry.vertices.push(particle);
+            geometry.colors.push(new THREE.Color(Math.random() * 0xffffff));
         }
     }
+    // 相较于 THREE.Sprite，THREE.Points 更适合粒子数量多的情况。
+    var points = new THREE.Points(geometry, material);
+    scene.add(points);
 
     render();
 
