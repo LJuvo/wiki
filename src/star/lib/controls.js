@@ -16,9 +16,9 @@ export function initControls(camera, renderer) {
     //是否自动旋转
     controls.autoRotate = true;
     //设置相机距离原点的最远距离
-    controls.minDistance = 100;
+    controls.minDistance = 10;
     //设置相机距离原点的最远距离
-    controls.maxDistance = 200;
+    controls.maxDistance = 400;
     //是否开启右键拖拽
     controls.enablePan = false;
 

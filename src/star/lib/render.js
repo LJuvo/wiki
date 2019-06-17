@@ -1,7 +1,8 @@
 import * as THREE from "three";
 export function initRender(bId, bW, bH) {
     let renderer = new THREE.WebGLRenderer({
-        antialias: true
+        antialias: true,
+        alpha: true
     });
     renderer.setSize(bW, bH);
     //告诉渲染器需要阴影效果

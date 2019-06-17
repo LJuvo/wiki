@@ -74,6 +74,14 @@ ThBox.prototype.init = (boxId, boxWidth, boxHeight) => {
             scene.add(sprite);
         }
     }
+    new MTLLoader().load("obj/test.mtl", function(materials) {
+        materials.preload();
+        new OBJLoader().setMaterials(materials).load("obj/test.obj", function(obj) {
+            obj.scale.set(0.8, 0.8, 0.8);
+            obj.position.set(-40, -50, 10);
+            scene.add(obj);
+        });
+    });
 
     render();
 

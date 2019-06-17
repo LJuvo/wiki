@@ -15,7 +15,8 @@ export function initAmbientLight() {
 }
 export function initPointLight() {
     let pointLight = new THREE.PointLight("#ffffff");
-    pointLight.position.set(15, 30, 10);
+    pointLight.position.set(15, 80, 10);
     pointLight.castShadow = true;
+    pointLight.intensity = 1.3;
     return pointLight;
 }
