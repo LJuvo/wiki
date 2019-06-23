@@ -1,16 +1,65 @@
 <template>
   <div id="box" style="height: 100%;width: 100%;">
     <!-- <img src="a.gif" style="height:100%"> -->
-    <div id="marsBox" class="mars-pane"></div>
-    <div></div>
+    <!-- <div id="marsBox" class="mars-pane"></div> -->
+    <div class="floor-pane">
+      <floor-watcher></floor-watcher>
+    </div>
+    <svg-box></svg-box>
+    <svg-box-a></svg-box-a>
+    <svg-box-b></svg-box-b>
+    <svg-box-c></svg-box-c>
+    <svg-box-d></svg-box-d>
+    <svg-box-e></svg-box-e>
+    <svg-box-f></svg-box-f>
+    <svg-box-g></svg-box-g>
+    <svg-box-h></svg-box-h>
+    <svg-box-i></svg-box-i>
+    <svg-box-j></svg-box-j>
+    <svg-box-k></svg-box-k>
+    <svg-box-l></svg-box-l>
+    <svg-box-m></svg-box-m>
   </div>
 </template>
 
 <script>
+import FloorWatcher from "./floorWatcher";
 import MARS from "../../mars/mars";
 import * as d3 from "d3";
 import TWEEN from "tween";
+
+import SvgBox from "./svgBox";
+import SvgBoxA from "./svgBox.1";
+import SvgBoxB from "./svgBox.2";
+import SvgBoxC from "./svgBox.3";
+import SvgBoxD from "./svgBox.4";
+import SvgBoxE from "./svgBox.5";
+import SvgBoxF from "./svgBox.6";
+import SvgBoxG from "./svgBox.7";
+import SvgBoxH from "./svgBox.8";
+import SvgBoxI from "./svgBox.9";
+import SvgBoxJ from "./svgBox.10";
+import SvgBoxK from "./svgBox.11";
+import SvgBoxL from "./svgBox.12";
+import SvgBoxM from "./svgBox.13";
 export default {
+  components: {
+    FloorWatcher,
+    SvgBox,
+    SvgBoxA,
+    SvgBoxB,
+    SvgBoxC,
+    SvgBoxD,
+    SvgBoxE,
+    SvgBoxF,
+    SvgBoxG,
+    SvgBoxH,
+    SvgBoxI,
+    SvgBoxJ,
+    SvgBoxK,
+    SvgBoxL,
+    SvgBoxM
+  },
   data() {
     return {
       data: [],
@@ -45,18 +94,18 @@ export default {
     }
   },
   watch: {
-    data: function dataChanged(newData, oldData) {
-      this.tweenData(newData, oldData);
-    },
-    width: function widthChanged() {
-      this.initialize();
-      this.update();
-    }
+    // data: function dataChanged(newData, oldData) {
+    //   this.tweenData(newData, oldData);
+    // },
+    // width: function widthChanged() {
+    //   this.initialize();
+    //   this.update();
+    // }
   },
   mounted() {
     // window.addEventListener("resize", this.onResize);
     // this.onResize();
-    this.Init();
+    // this.Init();
   },
   methods: {
     Init() {
@@ -162,7 +211,7 @@ export default {
     }
   },
   beforeDestroy() {
-    window.removeEventListener("resize", this.onResize);
+    // window.removeEventListener("resize", this.onResize);
   }
 };
 </script>
@@ -174,6 +223,13 @@ export default {
   top: 50px;
   width: 300px;
   height: 300px;
+}
+.floor-pane {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100%;
 }
 </style>
 
