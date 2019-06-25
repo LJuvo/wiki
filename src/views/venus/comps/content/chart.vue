@@ -9,7 +9,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    crtdata: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  watch: {
+    crtdata(v) {
+      console.log(v);
+    }
+  }
+};
 </script>
 
 <style>

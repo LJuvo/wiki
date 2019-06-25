@@ -4,13 +4,13 @@
       <div class="venus-header"></div>
       <div class="venus-content">
         <div class="venus-content-left">
-          <menu-chart></menu-chart>
+          <menu-chart @on-checked="onCheckedType"></menu-chart>
         </div>
         <div class="venus-content-wrapper">
-          <content-chart></content-chart>
+          <content-chart :crtdata="chartObj"></content-chart>
         </div>
         <div class="venus-content-right">
-          <controls-chart></controls-chart>
+          <controls-chart :crtdata="chartObj"></controls-chart>
         </div>
       </div>
       <div class="venus-footer">
@@ -30,11 +30,19 @@ import ContentChart from "./comps/content/chart";
 import ControlsChart from "./comps/controls/chart";
 export default {
   components: { MenuChart, ContentChart, ControlsChart },
+  data() {
+    return {
+      chartObj: {}
+    };
+  },
   mounted() {
     this.Init();
   },
   methods: {
-    Init() {}
+    Init() {},
+    onCheckedType(obj) {
+      this.chartObj = obj;
+    }
   }
 };
 </script>

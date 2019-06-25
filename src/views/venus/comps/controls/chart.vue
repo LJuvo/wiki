@@ -1,5 +1,7 @@
 <template>
   <div class="controls">
+    <h1>{{crtdata.title}}</h1>
+    <p>{{crtdata.label}}</p>
     <div class="controls-settings">
       <div v-for="(item,key) in controlsArr" :key="key">
         <span>{{item.label}}:</span>
@@ -13,6 +15,13 @@
 
 <script>
 export default {
+  props: {
+    crtdata: {
+      type: Object,
+      default: () => {}
+    }
+  },
+
   data() {
     return {
       controlsArr: [
@@ -37,6 +46,9 @@ export default {
     };
   },
   watch: {
+    crtdata(v) {
+      console.log(v);
+    },
     // controlsArr: {
     //   handler(newVal, oldVal) {
     //     console.log(newVal);

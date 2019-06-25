@@ -7,18 +7,25 @@
       </a>
     </div>
     <div class="type-menu">
-      <div class="type-menu-item" v-for="(item,key) in kindTypeArr" :key="key">
+      <div
+        class="type-menu-item"
+        v-for="(item,key) in kindTypeArr"
+        :key="key"
+        @click="onCheckKindType(item)"
+      >
         <img :src="'chart/'+item.kind+'/'+item.thumb">
         <span class="type-menu-item-title">{{item.label}}</span>
       </div>
     </div>
     <div class="type-menu">
-      <div class="type-menu-item" v-for="(item,key) in chartTypeArr" :key="key">
+      <div
+        class="type-menu-item"
+        v-for="(item,key) in chartTypeArr"
+        :key="key"
+        @click="$emit('on-checked',item)"
+      >
         <img :src="item.thumb">
       </div>
-      <div class="type-menu-item"></div>
-      <div class="type-menu-item"></div>
-      <div class="type-menu-item"></div>
     </div>
   </div>
 </template>
@@ -38,8 +45,7 @@ export default {
   },
   mounted() {
     this.chartTypeArr = templates;
-    console.log(_.groupBy(this.chartTypeArr, "function_type"));
-    console.log(_.groupBy(this.chartTypeArr, "chart_type"));
+
     let tmp = [];
     this.chartTypeArr.forEach(ele => {
       tmp.push(ele.dataSrc);
@@ -56,6 +62,54 @@ export default {
         if (ele.kind == v) ele.checked = true;
       });
       this.kindTypeArr = _.filter(kind, { kind: v });
+    },
+    onCheckKindType(v) {
+      if (v.kind == "basic")
+        return (this.chartTypeArr = _.filter(templates, {
+          chart_type: v.label
+        }));
+      if (v.kind == "func") {
+        let arr = [];
+        templates.forEach(ele => {
+          ele.function_type.forEach(el => {
+            if (el == v.label + "类") {
+              arr.push(ele);
+            }
+          });
+        });
+        this.chartTypeArr = arr;
+      }
+    },
+    getCharFromUtf8(str) {
+      var cstr = "";
+      var nOffset = 0;
+      if (str == "") return "";
+      str = str.toLowerCase();
+      nOffset = str.indexOf("%e");
+      if (nOffset == -1) return str;
+      while (nOffset != -1) {
+        cstr += str.substr(0, nOffset);
+        str = str.substr(nOffset, str.length - nOffset);
+        if (str == "" || str.length < 9) return cstr;
+        cstr += utf8ToChar(str.substr(0, 9));
+        str = str.substr(9, str.length - 9);
+        nOffset = str.indexOf("%e");
+      }
+      return cstr + str;
+    },
+    // 转为unicode 编码
+    encodeUnicode(str) {
+      var res = [];
+      for (var i = 0; i < str.length; i++) {
+        res[i] = ("00" + str.charCodeAt(i).toString(16)).slice(-4);
+      }
+      return "\\u" + res.join("\\u");
+    },
+
+    // 解码
+    decodeUnicode(str) {
+      str = str.replace(/\\/g, "%");
+      return unescape(str);
     }
   }
 };
