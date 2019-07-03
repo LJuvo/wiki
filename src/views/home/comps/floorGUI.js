@@ -37,12 +37,6 @@ FloorGUI.prototype.init = (eleId, overCallback, clickCallback) => {
         lineArr.push([wNum * i, containerHeight]);
         lineDrawColor(svgEle, lineArr, "#4caf50");
     }
-    for (let k = 1; k < 6; k++) {
-        let lineArr = [];
-        lineArr.push([0, hNum * k]);
-        lineArr.push([containerWidth, hNum * k]);
-        lineDrawColor(svgEle, lineArr, "#ff5722");
-    }
 
     // let spriteDetail = svgEle.append("g");
     // spriteDetail

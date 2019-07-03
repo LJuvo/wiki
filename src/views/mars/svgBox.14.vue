@@ -1,5 +1,5 @@
 <template>
-  <div id="svgContainer12" style="width:100%;height:800px"></div>
+  <div id="svgContainer14" style="width:100%;height:800px"></div>
 </template>
 <script>
 import * as d3 from "d3";
@@ -9,12 +9,12 @@ export default {
   },
   mounted() {
     var marge = { top: 60, bottom: 60, left: 60, right: 60 };
-    const containerWidth = document.getElementById("svgContainer12")
+    const containerWidth = document.getElementById("svgContainer14")
       .offsetWidth;
-    const containerHeight = document.getElementById("svgContainer12")
+    const containerHeight = document.getElementById("svgContainer14")
       .offsetHeight;
     var svg = d3
-      .select("#svgContainer12")
+      .select("#svgContainer14")
       .append("svg")
       .attr("width", containerWidth)
       .attr("height", containerHeight)

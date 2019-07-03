@@ -7,9 +7,14 @@
 <script>
 import * as THREE from "three";
 import STAR from "../../star/star";
+import WAll from "./Wall";
+import * as d3 from "d3";
 export default {
   mounted() {
-    this.Init();
+    // this.Init();
+    d3.svg("surroundings.svg").then(result => {
+      let tmp = new WAll(result);
+    });
   },
   methods: {
     Init() {
