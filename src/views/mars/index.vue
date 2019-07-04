@@ -21,6 +21,7 @@
     <svg-box-m></svg-box-m>
     <svg-box-o></svg-box-o>
     <svg-box-p></svg-box-p>
+    <svg-box-q></svg-box-q>
   </div>
 </template>
 
@@ -46,6 +47,7 @@ import SvgBoxL from "./svgBox.12";
 import SvgBoxM from "./svgBox.13";
 import SvgBoxO from "./svgBox.15";
 import SvgBoxP from "./svgBox.16";
+import SvgBoxQ from "./svgBox.17";
 export default {
   components: {
     FloorWatcher,
@@ -64,7 +66,8 @@ export default {
     SvgBoxL,
     SvgBoxM,
     SvgBoxO,
-    SvgBoxP
+    SvgBoxP,
+    SvgBoxQ
   },
   data() {
     return {

@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import CornorPie from "./cornorPieChart";
 export default {
   props: {
     crtdata: {
