@@ -9,6 +9,7 @@
 
 <script>
 import ColorInformation from "./ColorInformation";
+// import HiGeroo from "higeroo";
 export default {
   components: { ColorInformation },
   data() {
