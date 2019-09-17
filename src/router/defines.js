@@ -3,7 +3,7 @@ export const appRouter = {
     name: "root",
     component: () =>
         import ("../views"),
-    redirect: "/color",
+    redirect: "/amr",
     children: [{
             path: "home",
             name: "home",
@@ -38,7 +38,7 @@ export const appRouter = {
             path: "star",
             name: "star",
             component: () =>
-                import ("../views/star/")
+                import ("../views/star/test")
         },
         {
             path: "venus",
@@ -51,6 +51,12 @@ export const appRouter = {
             name: "mars",
             component: () =>
                 import ("../views/mars/")
+        },
+        {
+            path: "amr",
+            name: "amr",
+            component: () =>
+                import ("../views/amr/")
         }
     ]
 };

@@ -5,12 +5,11 @@ import router from "./router";
 import config from "./config/";
 import higeroo from "../node_modules/higeroo/src/lib/index";
 // import higeroo from "higeroo";
-// import BeetColor from "beet-color";
-import BeetColor from "../node_modules/beet-color/dist/js/index.c6219dc2";
-
-Vue.use(BeetColor);
+import BeetColor from "beet-color";
+// import BeetColor from "../node_modules/beet-color/dist/js/index.c6219dc2";
 
 Vue.use(VueResource);
+Vue.use(BeetColor);
 Vue.use(higeroo);
 Vue.config.productionTip = false;
 Vue.prototype.$config = config;
