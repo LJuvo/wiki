@@ -38,7 +38,7 @@ export const appRouter = {
             path: "star",
             name: "star",
             component: () =>
-                import ("../views/star/test")
+                import ("../views/star/")
         },
         {
             path: "venus",
@@ -57,6 +57,12 @@ export const appRouter = {
             name: "amr",
             component: () =>
                 import ("../views/amr/")
+        },
+        {
+            path: "sight",
+            name: "sight",
+            component: () =>
+                import ("../views/sight/")
         }
     ]
 };

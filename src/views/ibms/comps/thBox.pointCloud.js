@@ -39,7 +39,7 @@ ThBox.prototype.init = (boxId, boxWidth, boxHeight) => {
     var mesh;
 
     var loader = new THREE.STLLoader();
-    loader.load("obj/cube3.stl", function(geometry) {
+    loader.load("obj/td.stl", function(geometry) {
         //创建纹理
         var material = new THREE.PointsMaterial({
             color: 0xffffff,
@@ -62,7 +62,8 @@ ThBox.prototype.init = (boxId, boxWidth, boxHeight) => {
         mesh = new THREE.Points(geometry, material);
         mesh.rotation.x = -0.5 * Math.PI; //将模型摆正
         // mesh.scale.set(0.1, 0.1, 0.1); //缩放
-        mesh.scale.set(4, 4, 4);
+        // mesh.scale.set(4, 4, 4);
+        mesh.scale.set(0.5, 0.5, 0.5);
         geometry.center(); //居中显示
         scene.add(mesh);
     });
@@ -73,8 +74,8 @@ ThBox.prototype.init = (boxId, boxWidth, boxHeight) => {
     function animate() {
         requestAnimationFrame(animate);
 
-        if (mesh) mesh.rotation.x += 0.01;
-        if (mesh) mesh.rotation.y += 0.01;
+        // if (mesh) mesh.rotation.x += 0.01;
+        // if (mesh) mesh.rotation.y += 0.01;
         renderer.render(scene, camera);
     }
 

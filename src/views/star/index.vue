@@ -1,9 +1,9 @@
 <template>
-  <div id="starBox" style="height: 100%;width: 100%;">
+  <div id="starBox" style="height: 100vh;width: 100%;">
     <!-- <img src="surroundings.svg"> -->
-    <hi-geroo-btn></hi-geroo-btn>
+    <!-- <hi-geroo-btn></hi-geroo-btn> -->
 
-    <test-model></test-model>
+    <!-- <test-model></test-model> -->
   </div>
 </template>
 
@@ -17,7 +17,7 @@ import TestModel from "./test";
 export default {
   components: { TestModel },
   mounted() {
-    // this.Init();
+    this.Init();
     // d3.svg("surroundings.svg").then(result => {
     //   let tmp = new WAll(result);
     // });

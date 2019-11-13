@@ -1,13 +1,12 @@
 <template>
-  <div id="threeBox" style="height: 100%;
-  width: 100%;">
+  <div id="threeBox" style="height: 100vh;width: 100vw;">
     <!-- <img src="surroundings.svg"> -->
   </div>
 </template>
 
 <script>
 import WEBGL from "./utils/WebGL";
-import ThBoxObj from "./comps/thBox";
+import ThBoxObj from "./comps/thBox.pointCloud";
 export default {
   mounted() {
     //WebGL兼容性检查
