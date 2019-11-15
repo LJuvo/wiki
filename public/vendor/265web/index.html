@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WASM TEST</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+
+  <body>
+    <div class="container" id="videoPlayer">
+      <div class="sideBar">
+        <span class="no-padding">
+          <img
+            src="img/home.png"
+            class="left"
+            id="btnHome"
+            title="Visit My Homepage"
+            onclick="window.open('https://blog.csdn.net/sonysuqin')"
+          />
+        </span>
+      </div>
+      <div class="canvasDiv">
+        <div class="loadEffect" id="loading" style="display:none;">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <canvas
+          id="playCanvas"
+          width="1744"
+          height="960"
+          style="width:872px;height:480px;"
+        ></canvas>
+        <!-- <canvas id="playCanvas" width="852" height="480"></canvas> -->
+      </div>
+      <div class="sideBar">
+        <span class="no-padding">
+          <img
+            src="img/play.png"
+            class="left"
+            id="btnPlayVideo"
+            onclick="playVideo()"
+          />
+        </span>
+        <span class="no-padding" style=" padding-left:5px;">
+          <img
+            src="img/stop.png"
+            class="left"
+            id="btnStopVideo"
+            onclick="stopVideo()"
+          />
+        </span>
+        <span class="track-padding"> </span>
+        <span class="no-padding">
+          <input id="timeTrack" type="range" value="0" />
+        </span>
+        <span class="no-padding">
+          <label id="timeLabel">00:00:00/00:00:00</label>
+        </span>
+        <span class="no-padding">
+          <select class="no-padding" id="speedSelect" onchange="selectSpeed()">
+            <option value="1.0" selected>正常</option>
+            <option value="0.5">2倍</option>
+            <option value="2.0">0.5倍</option>
+          </select>
+        </span>
+        <span class="no-padding right">
+          <img
+            src="img/fullscreen.png"
+            class="right"
+            id="btnFullscreen"
+            onclick="fullscreen()"
+          />
+        </span>
+      </div>
+    </div>
+    <div id="footer">Copyright &copy; 2019 sonysuqin.All rights reserved.</div>
+
+    <script type="text/javascript" src="common.js"></script>
+    <script type="text/javascript" src="pcm-player.js"></script>
+    <script type="text/javascript" src="webgl.js"></script>
+    <script type="text/javascript" src="player.js"></script>
+    <script type="text/javascript">
+      //Player object.
+      self.player = new Player();
+
+      var loadingDiv = document.getElementById("loading");
+      self.player.setLoadingDiv(loadingDiv);
+
+      //File url.
+      //var videoFileUrl = "video/h265_high.mp4";
+      // var videoFileUrl = "video/00-32.881.flv";
+      //var videoFileUrl = "https://turbo.linkme8.cn:33100/srs1/live/Q_01_CAM7.flv?key=Q_01_CAM7&token=e9fd3e8f-aeaa-4083-b0dd-d1e2b88ee88a";
+      var videoFileUrl =
+        "https://turbo.linkme8.cn:33100/srs1/dvr/live/T1_05_CAM8/2019-11-13-13/18-02.573.flv?key=T1_05_CAM8&token=e9fd3e8f-aeaa-4083-b0dd-d1e2b88ee88a";
+      //Formated logger.
+      var logger = new Logger("Page");
+      function selectSpeed() {
+        var el = document.getElementById("speedSelect");
+        self.player.setSpeed(el.value);
+      }
+
+      function playVideo() {
+        var el = document.getElementById("btnPlayVideo");
+        var currentState = self.player.getState();
+        if (currentState == playerStatePlaying) {
+          el.src = "img/play.png";
+        } else {
+          el.src = "img/pause.png";
+        }
+
+        if (currentState != playerStatePlaying) {
+          const canvasId = "playCanvas";
+          var canvas = document.getElementById(canvasId);
+          if (!canvas) {
+            logger.logError("No Canvas with id " + canvasId + "!");
+            return false;
+          }
+
+          self.player.play(
+            videoFileUrl,
+            canvas,
+            function(e) {
+              console.log(
+                "play error " + e.error + " status " + e.status + "."
+              );
+              if (e.error == 1) {
+                logger.logInfo("Finished.");
+              }
+            },
+            524288
+          );
+
+          var timeTrack = document.getElementById("timeTrack");
+          var timeLabel = document.getElementById("timeLabel");
+          self.player.setTrack(timeTrack, timeLabel);
+        } else {
+          self.player.pause();
+        }
+
+        return true;
+      }
+
+      function stopVideo() {
+        self.player.stop();
+        var button = document.getElementById("btnPlayVideo");
+        button.value = "Play";
+      }
+
+      function fullscreen() {
+        self.player.fullscreen();
+      }
+    </script>
+  </body>
+</html>

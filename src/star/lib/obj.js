@@ -75,11 +75,11 @@ export function initPointObj(scene, name, pos, sca, rot) {
     });
 }
 
-export function initLineObj(scene, name, pos, sca, rot) {
+export function initLineObj(scene, name, pos, sca, rot, color = 0x00ffff) {
     new THREE.STLLoader().load(name + ".stl", function(geometry) {
         //创建线纹理
         //生成一个基础材质，即赋予几何体一种简单的颜色或者线框
-        let wireFrameMat = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+        let wireFrameMat = new THREE.MeshBasicMaterial({ color: color });
         //看来基础材质在此处的作用是线框
         wireFrameMat.wireframe = true;
         let mesh = new THREE.Mesh(geometry, wireFrameMat);

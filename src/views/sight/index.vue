@@ -6,7 +6,8 @@
 <script>
 export default {
   components: {
-    ShowPane: () => import("./comps/sight/ShowPane")
+    ShowPane: () => import("./comps/sight/ShowSight")
+    // ShowPane: () => import("./comps/sight/ShowPane")
   },
   data() {
     return {};

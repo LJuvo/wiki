@@ -10,6 +10,7 @@ import { initCamera } from "./lib/camera";
 import { initBasicLight, initAmbientLight, initPointLight } from "./lib/light";
 import { initControls } from "./lib/controls";
 import { initMTLObj, initPointObj, initLineObj, initFaceObj } from "./lib/obj";
+import { Color } from "three";
 let star = () => {};
 let renderer, scene, camera, controls, gui, ambientLight, pointLight;
 
@@ -25,7 +26,7 @@ let Init = (id, devState) => {
     scene.add(ambientLight);
     pointLight = initPointLight();
     scene.add(pointLight);
-    gui = initGui(ambientLight, pointLight);
+    // gui = initGui(ambientLight, pointLight);
 
     controls = initControls(camera, renderer);
 
@@ -48,9 +49,9 @@ let animate = () => {
     render();
 
     //更新相关位置
-    pointLight.position.y = gui.lightY;
+    // pointLight.position.y = gui.lightY;
 
-    controls.update();
+    // controls.update();
 
     requestAnimationFrame(animate);
 };
@@ -84,8 +85,8 @@ star.prototype.createObj = (objName, size, pos) => {
 star.prototype.createPointObj = (objName, size, pos, sca, rot) => {
     initPointObj(scene, objName, size, pos, sca, rot);
 };
-star.prototype.createLineObj = (objName, size, pos, sca, rot) => {
-    initLineObj(scene, objName, size, pos, sca, rot);
+star.prototype.createLineObj = (objName, size, pos, sca, rot, lineColor) => {
+    initLineObj(scene, objName, size, pos, sca, rot, lineColor);
 };
 star.prototype.createFaceObj = (objName, size, pos, sca, rot) => {
     initFaceObj(scene, objName, size, pos, sca, rot);

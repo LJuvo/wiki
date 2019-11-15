@@ -63,6 +63,12 @@ export const appRouter = {
             name: "sight",
             component: () =>
                 import ("../views/sight/")
+        },
+        {
+            path: "wasm",
+            name: "wasm",
+            component: () =>
+                import ("../views/wasm/index")
         }
     ]
 };
