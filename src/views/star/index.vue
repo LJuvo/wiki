@@ -1,10 +1,5 @@
 <template>
-  <div id="starBox" style="height: 100vh;width: 100%;">
-    <!-- <img src="surroundings.svg"> -->
-    <!-- <hi-geroo-btn></hi-geroo-btn> -->
-
-    <!-- <test-model></test-model> -->
-  </div>
+  <div id="starBox" style="height: 100vh;width: 100%;background:#000;"></div>
 </template>
 
 <script>
@@ -18,9 +13,6 @@ export default {
   components: { TestModel },
   mounted() {
     this.Init();
-    // d3.svg("surroundings.svg").then(result => {
-    //   let tmp = new WAll(result);
-    // });
   },
   methods: {
     Init() {
@@ -40,10 +32,9 @@ export default {
       //告诉立方体需要投射阴影
       cube.castShadow = true;
 
-      // star.createBox(cube);
+      star.createBox(cube);
       star.createGround();
-      // star.createObj("obj/test", 0.15, { x: 0, y: 0, z: 0 });
-      // star.createObj("obj/PlayerShip_002", 0.03, { x: 0, y: 10, z: 0 });
+
       star.createPointObj(
         "obj/PlayerShip_002",
         { x: -40, y: 10, z: -40 },

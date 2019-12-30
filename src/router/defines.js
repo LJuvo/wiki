@@ -3,7 +3,7 @@ export const appRouter = {
     name: "root",
     component: () =>
         import ("../views"),
-    redirect: "/amr",
+    redirect: "/mars",
     children: [{
             path: "home",
             name: "home",
@@ -75,6 +75,13 @@ export const appRouter = {
             name: "switch",
             component: () =>
                 import ("../views/switch/")
+        },
+        {
+            path: "instance",
+            name: "instance",
+            description: "设备状态模拟",
+            component: () =>
+                import ("../views/instance/")
         }
     ]
 };

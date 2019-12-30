@@ -1,16 +1,20 @@
+import Logger from "./common"
+import PCMPlayer from "./pcm-player"
+import WebGLPlayer from "./webgl"
+
 //Decoder states.
-const decoderStateIdle          = 0;
-const decoderStateInitializing  = 1;
-const decoderStateReady         = 2;
-const decoderStateFinished      = 3;
+const decoderStateIdle = 0;
+const decoderStateInitializing = 1;
+const decoderStateReady = 2;
+const decoderStateFinished = 3;
 
 //Player states.
-const playerStateIdle           = 0;
-const playerStatePlaying        = 1;
-const playerStatePausing        = 2;
+const playerStateIdle = 0;
+const playerStatePlaying = 1;
+const playerStatePausing = 2;
 
 //Constant.
-const maxVideoFrameQueueSize    = 16;
+const maxVideoFrameQueueSize = 16;
 const downloadSpeedByteRateCoef = 1.5;
 
 function FileInfo(url) {
@@ -21,51 +25,51 @@ function FileInfo(url) {
 }
 
 function Player() {
-    this.fileInfo           = null;
-    this.pcmPlayer          = null;
-    this.canvas             = null;
-    this.webglPlayer        = null;
-    this.callback           = null;
-    this.waitHeaderLength   = 524288;
-    this.duration           = 0;
-    this.pixFmt             = 0;
-    this.videoWidth         = 0;
-    this.videoHeight        = 0;
-    this.yLength            = 0;
-    this.uvLength           = 0;
-    this.beginTimeOffset    = 0;
-    this.decoderState       = decoderStateIdle;
-    this.playerState        = playerStateIdle;
-    this.decoding           = false;
-    this.decodeInterval     = 5;
-    this.audioQueue         = [];
-    this.videoQueue         = [];
+    this.fileInfo = null;
+    this.pcmPlayer = null;
+    this.canvas = null;
+    this.webglPlayer = null;
+    this.callback = null;
+    this.waitHeaderLength = 524288;
+    this.duration = 0;
+    this.pixFmt = 0;
+    this.videoWidth = 0;
+    this.videoHeight = 0;
+    this.yLength = 0;
+    this.uvLength = 0;
+    this.beginTimeOffset = 0;
+    this.decoderState = decoderStateIdle;
+    this.playerState = playerStateIdle;
+    this.decoding = false;
+    this.decodeInterval = 5;
+    this.audioQueue = [];
+    this.videoQueue = [];
     this.videoRendererTimer = null;
-    this.downloadTimer      = null;
-    this.chunkInterval      = 200;
-    this.downloadSeqNo      = 0;
-    this.downloading        = false;
-    this.timeLabel          = null;
-    this.timeTrack          = null;
-    this.trackTimer         = null;
+    this.downloadTimer = null;
+    this.chunkInterval = 200;
+    this.downloadSeqNo = 0;
+    this.downloading = false;
+    this.timeLabel = null;
+    this.timeTrack = null;
+    this.trackTimer = null;
     this.trackTimerInterval = 500;
-    this.displayDuration    = "00:00:00";
-    this.audioEncoding      = "";
-    this.audioChannels      = 0;
-    this.audioSampleRate    = 0;
-    this.seeking            = false;  // Flag to preventing multi seek from track.
-    this.justSeeked         = false;  // Flag to preventing multi seek from ffmpeg.
-    this.urgent             = false;
-    this.loadingDiv         = null;
-    this.logger             = new Logger("Player");
+    this.displayDuration = "00:00:00";
+    this.audioEncoding = "";
+    this.audioChannels = 0;
+    this.audioSampleRate = 0;
+    this.seeking = false; // Flag to preventing multi seek from track.
+    this.justSeeked = false; // Flag to preventing multi seek from ffmpeg.
+    this.urgent = false;
+    this.loadingDiv = null;
+    this.logger = new Logger("Player");
     this.initDownloadWorker();
     this.initDecodeWorker();
 }
 
-Player.prototype.initDownloadWorker = function () {
+Player.prototype.initDownloadWorker = function() {
     var self = this;
     this.downloadWorker = new Worker("downloader.js");
-    this.downloadWorker.onmessage = function (evt) {
+    this.downloadWorker.onmessage = function(evt) {
         var objData = evt.data;
         switch (objData.t) {
             case kGetFileInfoRsp:
@@ -78,10 +82,10 @@ Player.prototype.initDownloadWorker = function () {
     }
 };
 
-Player.prototype.initDecodeWorker = function () {
+Player.prototype.initDecodeWorker = function() {
     var self = this;
     this.decodeWorker = new Worker("decoder.js");
-    this.decodeWorker.onmessage = function (evt) {
+    this.decodeWorker.onmessage = function(evt) {
         var objData = evt.data;
         switch (objData.t) {
             case kInitDecoderRsp:
@@ -108,28 +112,28 @@ Player.prototype.initDecodeWorker = function () {
         }
     }
 };
-Player.prototype.setSpeed = function(value){
+Player.prototype.setSpeed = function(value) {
     var ret = {
         e: 0,
         m: "Success"
     };
     if (!this.decodeWorker) {
-            ret = {
-                e: -4,
-                m: "Decoder not initialized"
-            };
-            success = false;
-            this.logger.logError("[ER] Decoder not initialized.");
-	    return ret;
-        }
-    var req = {
-	v: value,
-	t: kSetSpeedReq
+        ret = {
+            e: -4,
+            m: "Decoder not initialized"
+        };
+        success = false;
+        this.logger.logError("[ER] Decoder not initialized.");
+        return ret;
     }
-	this.decodeWorker.postMessage(req);
+    var req = {
+        v: value,
+        t: kSetSpeedReq
+    }
+    this.decodeWorker.postMessage(req);
     return ret;
 }
-Player.prototype.play = function (url, canvas, callback, waitHeaderLength) {
+Player.prototype.play = function(url, canvas, callback, waitHeaderLength) {
     this.logger.logInfo("Play " + url + ".");
 
     var ret = {
@@ -211,7 +215,7 @@ Player.prototype.play = function (url, canvas, callback, waitHeaderLength) {
     return ret;
 };
 
-Player.prototype.pause = function () {
+Player.prototype.pause = function() {
     this.logger.logInfo("Pause.");
 
     if (this.playerState != playerStatePlaying) {
@@ -243,7 +247,7 @@ Player.prototype.pause = function () {
     return ret;
 };
 
-Player.prototype.resume = function () {
+Player.prototype.resume = function() {
     this.logger.logInfo("Resume.");
 
     if (this.playerState != playerStatePausing) {
@@ -288,7 +292,7 @@ Player.prototype.resume = function () {
     return ret;
 };
 
-Player.prototype.stop = function () {
+Player.prototype.stop = function() {
     this.logger.logInfo("Stop.");
     if (this.playerState == playerStateIdle) {
         var ret = {
@@ -307,21 +311,21 @@ Player.prototype.stop = function () {
     this.stopDownloadTimer();
     this.stopTrackTimer();
 
-    this.fileInfo           = null;
-    this.canvas             = null;
-    this.webglPlayer        = null;
-    this.callback           = null;
-    this.duration           = 0;
-    this.pixFmt             = 0;
-    this.videoWidth         = 0;
-    this.videoHeight        = 0;
-    this.yLength            = 0;
-    this.uvLength           = 0;
-    this.decoderState       = decoderStateIdle;
-    this.playerState        = playerStateIdle;
-    this.decoding           = false;
-    this.audioQueue         = [];
-    this.videoQueue         = [];
+    this.fileInfo = null;
+    this.canvas = null;
+    this.webglPlayer = null;
+    this.callback = null;
+    this.duration = 0;
+    this.pixFmt = 0;
+    this.videoWidth = 0;
+    this.videoHeight = 0;
+    this.yLength = 0;
+    this.uvLength = 0;
+    this.decoderState = decoderStateIdle;
+    this.playerState = playerStateIdle;
+    this.decoding = false;
+    this.audioQueue = [];
+    this.videoQueue = [];
 
     if (this.pcmPlayer) {
         this.pcmPlayer.destroy();
@@ -371,28 +375,28 @@ Player.prototype.seekTo = function(ms) {
     this.showLoading();
 };
 
-Player.prototype.fullscreen = function () {
+Player.prototype.fullscreen = function() {
     if (this.webglPlayer) {
         this.webglPlayer.fullscreen();
     }
 };
 
-Player.prototype.getState = function () {
+Player.prototype.getState = function() {
     return this.playerState;
 };
 
-Player.prototype.setTrack = function (timeTrack, timeLabel) {
+Player.prototype.setTrack = function(timeTrack, timeLabel) {
     this.timeTrack = timeTrack;
     this.timeLabel = timeLabel;
 
     if (this.timeTrack) {
         var self = this;
-        this.timeTrack.oninput = function () {
+        this.timeTrack.oninput = function() {
             if (!self.seeking) {
                 self.seekTo(self.timeTrack.value);
             }
         }
-        this.timeTrack.onchange = function () {
+        this.timeTrack.onchange = function() {
             if (!self.seeking) {
                 self.seekTo(self.timeTrack.value);
             }
@@ -400,7 +404,7 @@ Player.prototype.setTrack = function (timeTrack, timeLabel) {
     }
 };
 
-Player.prototype.onGetFileInfo = function (info) {
+Player.prototype.onGetFileInfo = function(info) {
     if (this.playerState == playerStateIdle) {
         return;
     }
@@ -420,7 +424,7 @@ Player.prototype.onGetFileInfo = function (info) {
     }
 };
 
-Player.prototype.onFileData = function (data, start, end, seq) {
+Player.prototype.onFileData = function(data, start, end, seq) {
     //this.logger.logInfo("Got data bytes=" + start + "-" + end + ".");
     this.downloading = false;
 
@@ -429,7 +433,7 @@ Player.prototype.onFileData = function (data, start, end, seq) {
     }
 
     if (seq != this.downloadSeqNo) {
-        return;  // Old data.
+        return; // Old data.
     }
 
     if (this.playerState == playerStatePausing) {
@@ -470,7 +474,7 @@ Player.prototype.onFileData = function (data, start, end, seq) {
     }
 };
 
-Player.prototype.onFileDataUnderDecoderIdle = function () {
+Player.prototype.onFileDataUnderDecoderIdle = function() {
     if (this.fileInfo.offset >= this.waitHeaderLength) {
         this.logger.logInfo("Opening decoder.");
         this.decoderState = decoderStateInitializing;
@@ -483,15 +487,15 @@ Player.prototype.onFileDataUnderDecoderIdle = function () {
     this.downloadOneChunk();
 };
 
-Player.prototype.onFileDataUnderDecoderInitializing = function () {
+Player.prototype.onFileDataUnderDecoderInitializing = function() {
     this.downloadOneChunk();
 };
 
-Player.prototype.onFileDataUnderDecoderReady = function () {
+Player.prototype.onFileDataUnderDecoderReady = function() {
     //this.downloadOneChunk();
 };
 
-Player.prototype.onInitDecoder = function (objData) {
+Player.prototype.onInitDecoder = function(objData) {
     if (this.playerState == playerStateIdle) {
         return;
     }
@@ -504,7 +508,7 @@ Player.prototype.onInitDecoder = function (objData) {
     }
 };
 
-Player.prototype.onOpenDecoder = function (objData) {
+Player.prototype.onOpenDecoder = function(objData) {
     if (this.playerState == playerStateIdle) {
         return;
     }
@@ -521,7 +525,7 @@ Player.prototype.onOpenDecoder = function (objData) {
     }
 };
 
-Player.prototype.onVideoParam = function (v) {
+Player.prototype.onVideoParam = function(v) {
     if (this.playerState == playerStateIdle) {
         return;
     }
@@ -560,7 +564,7 @@ Player.prototype.onVideoParam = function (v) {
     this.logger.logInfo("Byte rate:" + byteRate + " target speed:" + targetSpeed + " chunk interval:" + this.chunkInterval + ".");
 };
 
-Player.prototype.onAudioParam = function (a) {
+Player.prototype.onAudioParam = function(a) {
     if (this.playerState == playerStateIdle) {
         return;
     }
@@ -597,12 +601,12 @@ Player.prototype.onAudioParam = function (a) {
         flushingTime: 5000
     });
 
-    this.audioEncoding      = encoding;
-    this.audioChannels      = channels;
-    this.audioSampleRate    = sampleRate;
+    this.audioEncoding = encoding;
+    this.audioChannels = channels;
+    this.audioSampleRate = sampleRate;
 };
 
-Player.prototype.restartAudio = function () {
+Player.prototype.restartAudio = function() {
     if (this.pcmPlayer) {
         this.pcmPlayer.destroy();
         this.pcmPlayer = null;
@@ -616,7 +620,7 @@ Player.prototype.restartAudio = function () {
     });
 };
 
-Player.prototype.onAudioFrame = function (frame) {
+Player.prototype.onAudioFrame = function(frame) {
     if (this.playerState != playerStatePlaying) {
         return;
     }
@@ -639,12 +643,12 @@ Player.prototype.onAudioFrame = function (frame) {
     }
 };
 
-Player.prototype.onDecodeFinished = function (objData) {
+Player.prototype.onDecodeFinished = function(objData) {
     this.pauseDecoding();
-    this.decoderState   = decoderStateFinished;
+    this.decoderState = decoderStateFinished;
 }
 
-Player.prototype.onVideoFrame = function (frame) {
+Player.prototype.onVideoFrame = function(frame) {
     if (this.playerState != playerStatePlaying) {
         return;
     }
@@ -666,19 +670,19 @@ Player.prototype.onVideoFrame = function (frame) {
     }
 };
 
-Player.prototype.onSeekToRsp = function (ret) {
+Player.prototype.onSeekToRsp = function(ret) {
     if (ret != 0) {
         this.justSeeked = false;
         this.seeking = false;
     }
 };
 
-Player.prototype.onRequestData = function (offset) {
+Player.prototype.onRequestData = function(offset) {
     if (this.justSeeked) {
         this.logger.logInfo("Request data " + offset);
         if (offset >= 0 && offset < this.fileInfo.size) {
             this.fileInfo.offset = offset;
-        } 
+        }
         this.startDownloadTimer();
         //this.restartAudio();
         this.justSeeked = false;
@@ -724,11 +728,11 @@ Player.prototype.displayLoop = function() {
     }
 };
 
-Player.prototype.renderVideoFrame = function (data) {
+Player.prototype.renderVideoFrame = function(data) {
     this.webglPlayer.renderFrame(data, this.videoWidth, this.videoHeight, this.yLength, this.uvLength);
 };
 
-Player.prototype.downloadOneChunk = function () {
+Player.prototype.downloadOneChunk = function() {
     if (this.downloading) {
         return;
     }
@@ -762,15 +766,15 @@ Player.prototype.downloadOneChunk = function () {
     this.downloading = true;
 };
 
-Player.prototype.startDownloadTimer = function () {
+Player.prototype.startDownloadTimer = function() {
     var self = this;
     this.downloadSeqNo++;
-    this.downloadTimer = setInterval(function () {
+    this.downloadTimer = setInterval(function() {
         self.downloadOneChunk();
     }, this.chunkInterval);
 };
 
-Player.prototype.stopDownloadTimer = function () {
+Player.prototype.stopDownloadTimer = function() {
     if (this.downloadTimer != null) {
         clearInterval(this.downloadTimer);
         this.downloadTimer = null;
@@ -779,21 +783,21 @@ Player.prototype.stopDownloadTimer = function () {
     this.downloading = false;
 };
 
-Player.prototype.startTrackTimer = function () {
+Player.prototype.startTrackTimer = function() {
     var self = this;
-    this.trackTimer = setInterval(function () {
+    this.trackTimer = setInterval(function() {
         self.updateTrackTime();
     }, this.trackTimerInterval);
 };
 
-Player.prototype.stopTrackTimer = function () {
+Player.prototype.stopTrackTimer = function() {
     if (this.trackTimer != null) {
         clearInterval(this.trackTimer);
         this.trackTimer = null;
     }
 };
 
-Player.prototype.updateTrackTime = function () {
+Player.prototype.updateTrackTime = function() {
     if (this.playerState == playerStatePlaying && this.pcmPlayer) {
         var currentPlayTime = this.pcmPlayer.getTimestamp() + this.beginTimeOffset;
         if (this.timeTrack) {
@@ -806,7 +810,7 @@ Player.prototype.updateTrackTime = function () {
     }
 };
 
-Player.prototype.startDecoding = function () {
+Player.prototype.startDecoding = function() {
     var req = {
         t: kStartDecodingReq,
         i: this.decodeInterval
@@ -815,7 +819,7 @@ Player.prototype.startDecoding = function () {
     this.decoding = true;
 };
 
-Player.prototype.pauseDecoding = function () {
+Player.prototype.pauseDecoding = function() {
     var req = {
         t: kPauseDecodingReq
     };
@@ -823,14 +827,14 @@ Player.prototype.pauseDecoding = function () {
     this.decoding = false;
 };
 
-Player.prototype.formatTime = function (s) {
+Player.prototype.formatTime = function(s) {
     var h = Math.floor(s / 3600) < 10 ? '0' + Math.floor(s / 3600) : Math.floor(s / 3600);
     var m = Math.floor((s / 60 % 60)) < 10 ? '0' + Math.floor((s / 60 % 60)) : Math.floor((s / 60 % 60));
     var s = Math.floor((s % 60)) < 10 ? '0' + Math.floor((s % 60)) : Math.floor((s % 60));
     return result = h + ":" + m + ":" + s;
 };
 
-Player.prototype.reportPlayError = function (error, status, message) {
+Player.prototype.reportPlayError = function(error, status, message) {
     var e = {
         error: error || 0,
         status: status || 0,
@@ -842,17 +846,17 @@ Player.prototype.reportPlayError = function (error, status, message) {
     }
 };
 
-Player.prototype.setLoadingDiv = function (loadingDiv) {
+Player.prototype.setLoadingDiv = function(loadingDiv) {
     this.loadingDiv = loadingDiv;
 }
 
-Player.prototype.hideLoading = function () {
+Player.prototype.hideLoading = function() {
     if (this.loadingDiv != null) {
         loading.style.display = "none";
     }
 };
 
-Player.prototype.showLoading = function () {
+Player.prototype.showLoading = function() {
     if (this.loadingDiv != null) {
         loading.style.display = "block";
     }

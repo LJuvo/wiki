@@ -1,3 +1,8 @@
+import Logger from "./Logger"
+import PCMPlayer from "./PCMPlayer"
+import WebGLPlayer from "./Webgl"
+
+
 //Decoder states.
 const decoderStateIdle = 0;
 const decoderStateInitializing = 1;
@@ -20,7 +25,7 @@ function FileInfo(url) {
     this.chunkSize = 65536;
 }
 
-function Player() {
+let Player = function() {
     this.fileInfo = null;
     this.pcmPlayer = null;
     this.canvas = null;
@@ -363,7 +368,7 @@ Player.prototype.seekTo = function(ms) {
     });
 
     // Reset begin time offset.
-    this.logger.logInfo("this.beginTimeOffset = -1");
+    //this.logger.logInfo("this.beginTimeOffset = -1");
     this.beginTimeOffset = ms / 1000;
 
     this.seeking = true;
@@ -857,3 +862,5 @@ Player.prototype.showLoading = function() {
         loading.style.display = "block";
     }
 };
+
+module.exports = Player
