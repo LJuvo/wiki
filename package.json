@@ -14,7 +14,7 @@
     "dat.gui": "^0.7.6",
     "higeroo": "0.0.6",
     "lodash": "^4.17.11",
-    "three": "^0.105.2",
+    "three": "^0.137.0",
     "three-obj-mtl-loader": "^1.0.3",
     "three-orbitcontrols": "^2.102.1",
     "three-stl-loader": "^1.0.6",
